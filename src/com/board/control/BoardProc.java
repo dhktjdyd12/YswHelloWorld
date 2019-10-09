@@ -9,6 +9,7 @@ import com.board.model.Employee;
 
 public class BoardProc {
 
+	private static final int Employee = 0;
 	Scanner sc = new Scanner(System.in);
 	Board[] boardAry = new Board[10];
 	BoardService service = new BoardServiceImpl();
@@ -26,7 +27,7 @@ public class BoardProc {
 			} else if (menu == 3) {
 				getBoardList();
 			} else if (menu == 4) {
-//				getUpdate();
+				getUpdate();
 			} else if (menu == 5) {
 				System.out.println("프로그램을 종료합니다.");
 				break;
@@ -35,30 +36,35 @@ public class BoardProc {
 		System.out.println("프로그램 종료.");
 	}
 
-
-
 	public void writeBoard() {
 		System.out.println("직원등록");
 		System.out.println("직원번호입력:");
 		int empId = sc.nextInt();
 		sc.nextLine();
+		
 		System.out.println("이름을 입력하세요.");
 		String firstName = sc.nextLine();
+		
 		System.out.println("성을 입력하세요.");
 		String lastName = sc.nextLine();
+		
 		System.out.println("email 입력하세요.");
 		String email = sc.nextLine();
+		
 		System.out.println("입사일 입력하세요.");
 		String hireDate = sc.nextLine();
+		
 		System.out.println("급여 입력하세요.");
 		int salary = sc.nextInt();
+		
 		System.out.println("JobId 입력하세요.");
 		String jobId = sc.nextLine();
+		
 		Employee emp = new Employee();
 		emp.setEmployeeId(empId);
 		emp.setFirstName(firstName);
 		emp.setLastName(lastName);
-		emp.setHireDate(hireDate);      // 2010-10-05
+		emp.setHireDate(hireDate); // 2010-10-05
 		emp.setSalary(salary);
 		emp.setEmail(email);
 		emp.setJobId(jobId);
@@ -71,9 +77,8 @@ public class BoardProc {
 		System.out.println("한건조회.");
 		System.out.println("조회할 사원번호를 입력:");
 		int emp = sc.nextInt();
-		Employee emp = service.getEmployee(empNo);
-		System.out.println(emp);
-	
+		Board emp1 = service.getBoard(emp, boardAry);
+		System.out.println(emp1);
 
 	}
 
@@ -87,4 +92,9 @@ public class BoardProc {
 
 	}
 
+	public void getUpdate() {
+		System.out.println("삭제할 사원번호를 입력.");
+		int mems = sc.nextInt();
+		service.deleteBoard(mems, boardAry);
+	}
 }

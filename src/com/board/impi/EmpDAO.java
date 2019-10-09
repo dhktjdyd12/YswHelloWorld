@@ -29,14 +29,14 @@ public class EmpDAO {
 	
 	
 	public Employee getEmployee(int empId) {
-		conn = DAO.getConect();   // DB 연결해주는 것
+		conn = DAO.getConect();                                        // DB 연결해주는 것
 		String sql = "select * from employees where employee_id = ?";  // sql변수에 이 구문을 담음 
 		String sql1 = "{? = call get_dept_name(?)}";
-		Employee emp = null;   // emp변수가 null이다.
+		Employee emp = null;                                           // emp변수가 null이다.
 		try {  
-			pstmt = conn.prepareStatement(sql); //DB에 위에서 입력받은 구문은 pstmt에 담는다.
-			pstmt.setInt(1, empId); //int타입으로  매개변수 첫번째값을 empId를 대입
-			rs = pstmt.executeQuery();  // 위에 매개변수가 들어있는 쿼리문을 rs에  대입해 실행
+			pstmt = conn.prepareStatement(sql);                //DB에 위에서 입력받은 구문은 pstmt에 담는다.
+			pstmt.setInt(1, empId);                            //int타입으로  매개변수 첫번째값을 empId를 대입
+			rs = pstmt.executeQuery();                         // 위에 매개변수가 들어있는 쿼리문을 rs에  대입해 실행
 			
 			CallableStatement cstmt = conn.prepareCall(sql1);          // function을 호출
 			cstmt.registerOutParameter(1, java.sql.Types.VARCHAR);

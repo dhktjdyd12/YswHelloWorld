@@ -3,15 +3,15 @@ package com.board.model;
 import java.util.List;
 
 public interface EmployeeService {
-	// ÀüÃ¼ ¸®½ºÆ®
+	// ì „ì²´ë¦¬ìŠ¤íŠ¸
 		public List<Employee> getEmpList();
-		// ÇÑ°Ç Á¶È¸
+		// í•œê±´ ì¡°íšŒ
 		public Employee getEmployee(int empNo);
-		// ÇÑ°Ç ÀÔ·Â
+		// í•œê±´ ìž…ë ¥
 		public void insertEmployee(Employee emp);
-		// º¯°æ Ã³¸®
+		// ë³€ê²½ ì²˜ë¦¬
 		public void updateEmployee(Employee emp);
-		// »èÁ¦Ã³¸®
+		// ì‚­ì œ ì²˜ë¦¬
 		public void deleteEmployee(int empNo);
 	}
 

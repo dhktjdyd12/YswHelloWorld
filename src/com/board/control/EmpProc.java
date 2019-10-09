@@ -40,17 +40,22 @@ public class EmpProc {
 		System.out.println("직원번호입력:");
 		int empId = sc.nextInt();
 		sc.nextLine();
+		
 		System.out.println("이름을 입력하세요.");
 		String firstName = sc.nextLine();
+		
 		System.out.println("성을 입력하세요.");
 		String lastName = sc.nextLine();
+		
 		System.out.println("email 입력하세요.");
 		String email = sc.nextLine();
+		
 		System.out.println("입사일 입력하세요.");
 		String hireDate = sc.nextLine();
-		System.out.println("급여 입력하세요.");
 		
+		System.out.println("급여 입력하세요.");
 		int salary = sc.nextInt();sc.nextLine();
+		
 		System.out.println("JobId 입력하세요.");
 		String jobId = sc.nextLine();
 		
@@ -63,7 +68,7 @@ public class EmpProc {
 		emp.setEmail(email);
 		emp.setJobId(jobId);
 //		service.writeBoard(board, boardAry);
-		service.insertEmployee(emp);
+//		service.insertEmployee(emp);
 	}
 
 	public void getBoard() {
@@ -91,6 +96,7 @@ public class EmpProc {
 	private void deleteBoardList() {
 		System.out.println("삭제할 직원을 입력해주세요");
 		String delEmployee = sc.nextLine();
+		
 		
 	}
 }
