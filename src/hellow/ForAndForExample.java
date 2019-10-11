@@ -15,7 +15,7 @@ public class ForAndForExample {
 		///////////////////
 		i = 1;
 		do {
-			System.out.println(4 + "*" + i + "=" + (4 * 1));
+			System.out.println(4 + "*" + i + "=" + (4 * i));
 			i++;
 		} while (i < 10);
 	}

@@ -36,12 +36,12 @@ public class BoardDBServiceImpl implements BoardDBService {  // BoardDBServiceIm
 
 	@Override
 	public void insertReply(BoardDB board) {
-		
+		dao.getReplayList(board);
 	}
 
 	@Override
 	public void updateBoard(BoardDB board) {
-		
+		dao.updateBoard(board);
 	}
 
 	@Override
