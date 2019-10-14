@@ -11,48 +11,148 @@ import com.board.common.DAO;
 import com.board.model.Board;
 import com.board.model.BoardDB;
 
-public class BoardDBDAO {
+public class BoardDBDAO { // sql문 작성하는 클래스
 	Connection conn = null;
 	ResultSet rs = null;
 	PreparedStatement pstmt = null;
 
-	public void updateBoard(BoardDB board) {
+	public void deleteBoard(BoardDB board) { // 게시글 삭제하는 메소드
 		conn = DAO.getConect();
-		String sql = "update boards set orig_no = orig_no"; 
-		//	String sql = "update boards set creation_date = sysdate "; 
-		if(board.getTitle() != null && board.getTitle().equals("")) {
+		List<BoardDB> list = getReplayList(board.getBoardNo());
+		if (list.size() > 0) {
+			System.out.println("댓글이 존재합니다.");
+		} else {
+			String sql = "delete from boards where board_no = ?";
+
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, board.getBoardNo());
+
+				int r = pstmt.executeUpdate();
+				System.out.println(r + "건이 삭제되었습니다.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void deleteBoard2(BoardDB board) {
+		conn = DAO.getConect();
+		String sql = "delete from boards where board_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board.getBoardNo());
+			rs = pstmt.executeQuery();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public boolean checkForReply(int boardNO) {
+		conn = DAO.getConect();
+		String sql = "selecet count(*) as cnt from boards" + "where orig_no is null and board_no = ?";
+		int rnt = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNO);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				rnt = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} if(rnt > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean checkResponsibility(BoardDB board) {       // 
+		conn = DAO.getConect();
+		String sql = "selecet count(*) as cnt from boards\r\n" 
+					+ "where orig_no is null and board_no = ? and writer = ?";
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board.getBoardNo());
+			pstmt.setString(2, board.getWriter());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		} if (result > 0) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+
+	public void updateBoard(BoardDB board) { // 게시글
+		System.out.println("content" + board.getContent());
+		conn = DAO.getConect();
+		String sql = "update boards set orig_no = orig_no";
+
+		if (board.getTitle() != null && board.getTitle().equals("")) {
 			sql += ",title= ? ";
 		}
-		if(board.getContent() != null && board.getContent().equals("")) {
+		if (board.getContent() != null && board.getContent().equals("")) {
 			sql += ",content = ? ";
 		}
 		sql += "where board_no=? and orig_no is null";
 		int n = 0;
+
 		try {
 			pstmt = conn.prepareStatement(sql);
-			if (board.getTitle() != null ) {
+			if (board.getTitle() != null && board.getTitle().equals("")) {
 				pstmt.setString(++n, board.getTitle());
 			}
-			if (board.getContent() != null ) {
-				pstmt.setString(++n, board.getTitle());
+			if (board.getContent() != null && board.getContent().equals("")) {
+				pstmt.setString(++n, board.getContent());
 			}
+
 			pstmt.setInt(++n, board.getBoardNo());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			conn.close();
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
-	public void replayBoard(Board board) {
+
+	public void replayBoard(BoardDB board) {
 		conn = DAO.getConect();
-		String sql = "insert into boards values"
-					+"(board_seq.nextval, ?, ?, ?, sysdata, ?)";
+		String sql = "insert into boards values" + "(board_seq.nextval, ?, ?, ?, sysdata, ?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board.getTitle());
-			pstmt.setString(2, board.getContents());
+			pstmt.setString(2, board.getContent());
 			pstmt.setString(3, board.getWriter());
 
 			int r = pstmt.executeUpdate();
@@ -68,36 +168,43 @@ public class BoardDBDAO {
 			}
 		}
 	}
-	
-	public List<BoardDB> getReplayList(int boardNo) {  
+
+	public List<BoardDB> getReplayList(int board2) {
 		conn = DAO.getConect();
 		String sql = "select * from boards where orig_no = ?";
-		
-		
-		List<BoardDB> list = new ArrayList<>(); 
-		// ^ 컬렉션프레임워크 List의 데이터타입이 BoardDB인 변수 list
-		// ^ list컬레션에 속한 ArrayList 클래스를 사용해서 리스트 선언 
+
+		// 컬렉션프레임워크 List의 데이터타입이 BoardDB인 변수 list
+		// list컬레션에 속한 ArrayList 클래스를 사용해서 리스트 선언
+		List<BoardDB> list = new ArrayList<>();
+
 		try {
+			//
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board2);
 			rs = pstmt.executeQuery();
-			while (rs.next() ) {
-				Board board = new BoardDB;
-				board .setBoardNo(rs.getInt("board_no"));
+			while (rs.next()) {
+				BoardDB board = new BoardDB();
+				board.setBoardNo(rs.getInt("board_no"));
 				board.setTitle(rs.getString("title"));
-				board.setContents(rs.getString("Content"));
+				board.setContent(rs.getString("Content"));
 				board.setWriter(rs.getString("writer"));
 
+				list.add(board);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			conn.close();
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		pstmt.setInt(1, boardNo);
+
 		return null;
 	}
-	
+
 	public BoardDB getBoard(int boardNo) {
 		BoardDB board = null;
 		conn = DAO.getConect();
@@ -118,7 +225,7 @@ public class BoardDBDAO {
 		}
 		return board;
 	}
-	
+
 	public void insertBoard(BoardDB board) {
 		conn = DAO.getConect();
 		String sql = "insert into boards values((select max(board_no)+1 from boards), ?, ?, ?, sysdate, null)";
@@ -160,4 +267,10 @@ public class BoardDBDAO {
 		}
 		return name;
 	}
+
+	public List<BoardDB> getBoardList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

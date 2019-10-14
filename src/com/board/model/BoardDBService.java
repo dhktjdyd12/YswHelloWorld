@@ -2,12 +2,13 @@ package com.board.model;
 
 import java.util.List;
 
-public interface BoardDBService {
+public interface BoardDBService {       //기능을 정의만 하는 클래스
+	
 	public String loginCheck(String id, String passwd); // 로그인 체크
 
 	public void insertBoard(BoardDB board);             // 게시글 작성
 
-	public Board[] getBoardList();                      // 게시글 리스트
+	public List<BoardDB> getBoardList();               // 게시글 리스트
 
 	public BoardDB getBoard(int boardNo);               // 한건 조회
 
@@ -17,6 +18,6 @@ public interface BoardDBService {
 
 	public void updateBoard(BoardDB board);             // 수정
 
-	public void deleteBoard(int boardNo);               // 삭제
+	public void deleteBoard(BoardDB board);             // 삭제
 
 }

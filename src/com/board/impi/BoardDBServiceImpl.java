@@ -21,7 +21,7 @@ public class BoardDBServiceImpl implements BoardDBService {  // BoardDBServiceIm
 
 	@Override
 	public List<BoardDB> getBoardList() {
-		return null;
+		return dao.getBoardList();
 	}
 
 	@Override
@@ -36,17 +36,33 @@ public class BoardDBServiceImpl implements BoardDBService {  // BoardDBServiceIm
 
 	@Override
 	public void insertReply(BoardDB board) {
-		dao.getReplayList(board);
+		dao.replayBoard(board);
 	}
 
 	@Override
-	public void updateBoard(BoardDB board) {
-		dao.updateBoard(board);
+	public void updateBoard(BoardDB board) {             // 게시글 수정하는 메소드 재정의
+		// 해당글에 대한 권한 학인
+		if (dao.checkResponsibility(board)) {
+			dao.updateBoard(board);
+			System.out.println("변경되었씁니다.");
+		} else {
+			System.out.println("해당글에 대한 권한이 없습니다.");
+			
+		}
 	}
 
 	@Override
-	public void deleteBoard(int boardNo) {
-		
+	public void deleteBoard(BoardDB board) {              // 삭제하는 메소드 재정의
+		if(dao.checkResponsibility(board)) {                // 권한 체크
+			if(!dao.checkForReply(board.getBoardNo())) {    // 댓글 유뮤 체크
+				dao.deleteBoard2(board);
+				System.out.println("삭제되었습니다.");
+			} else {
+				System.out.println("댓글이 존재합니다.");
+			}
+		} else {
+			System.out.println("해당글에 대한 권한이 없습니다.");
+		}
 	}
 
 }
