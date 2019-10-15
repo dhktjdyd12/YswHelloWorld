@@ -18,7 +18,7 @@ public class BoardDBProc {
 	public void execute() { // 프로그램을 실행하는 execute 메소드
 		loginCheck();       // 회원인지 체크하는 메소드
 		while (true) {
-			System.out.println("1.게시글작성|2.게시글리스트|3.글조회|4.글내용수정|5.글번호변경| 6.종료");
+			System.out.println("1.게시글작성|2.게시글리스트|3.글조회|4.글내용수정|5.글번호변경|6.댓글 조회|7.종료");
 			int menu = sc.nextInt();
 			sc.nextLine();
 			if (menu == 1) {
@@ -31,12 +31,16 @@ public class BoardDBProc {
 				updateBoard();
 			} else if (menu == 5) {
 				deleteBoard();
-			}else if (menu == 6) {
+			} else if (menu == 6) {
+				getReply();
+			}else if (menu == 7) {
 				System.out.println("프로그램을 종료합니다.");
 				break;
 			}
 		}
 	}
+
+
 
 	private void loginCheck() {                       // 회원인지 확인하는 메소드
 		while (true) {
@@ -83,7 +87,7 @@ public class BoardDBProc {
 
 	}
 
-	private void getBoard() {                            // 게시글 조회하는 메소드
+	private void getBoard() {                            // 게시글 한개 조회하는 메소드
 		System.out.println("조회할 글 번호를 입력해주세요.");
 		int boardNo = sc.nextInt();sc.nextLine();
 		
@@ -152,5 +156,9 @@ public class BoardDBProc {
 		board.setWriter(loginId);
 		
 		service.deleteBoard(board);     // Ctrl 마우스클릭했을때 open implementation은 클래스로 이동
+	}
+	
+	private void getReply() {                         // 댓글조회하는 메소드
+		
 	}
 }

@@ -18,7 +18,7 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 
 	public void deleteBoard(BoardDB board) { // 게시글 삭제하는 메소드
 		conn = DAO.getConect();
-		List<BoardDB> list = getReplayList(board.getBoardNo());
+		List<BoardDB> list = getReplayList(board.getBoardNo());   // 제너릭타입이 BOardDB인 list 생성
 		if (list.size() > 0) {
 			System.out.println("댓글이 존재합니다.");
 		} else {
@@ -42,7 +42,7 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 		}
 	}
 
-	public void deleteBoard2(BoardDB board) {
+	public void deleteBoard2(BoardDB board) {            // 
 		conn = DAO.getConect();
 		String sql = "delete from boards where board_no = ?";
 		
@@ -61,7 +61,7 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 		}
 	}
 
-	public boolean checkForReply(int boardNO) {
+	public boolean checkForReply(int boardNO) {       //
 		conn = DAO.getConect();
 		String sql = "selecet count(*) as cnt from boards" + "where orig_no is null and board_no = ?";
 		int rnt = 0;
@@ -82,8 +82,8 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 	}
 
 	public boolean checkResponsibility(BoardDB board) {       // 
-		conn = DAO.getConect();
-		String sql = "selecet count(*) as cnt from boards\r\n" 
+		conn = DAO.getConect();                               // DB 연결
+		String sql = "selecet count(*) as cnt from boards\r\n"             //sql문을 작성
 					+ "where orig_no is null and board_no = ? and writer = ?";
 		int result = 0;
 		try {
@@ -205,10 +205,14 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 		return null;
 	}
 
-	public BoardDB getBoard(int boardNo) {
+	public BoardDB getBoard(int boardNo) {       // 게시글 1개 조회하는 메소드
 		BoardDB board = null;
 		conn = DAO.getConect();
 		String sql = "selcet from boards where board_no is null";
+//		String sql = "select board_no, title, content, writer, creation_date, orig_no,"
+//					+"get_reply_cnt(b.board_no) as reply_count"
+//					+"from boards b";
+//		"(" + rs.getString("reply_cnt")+")"
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, boardNo);
@@ -222,6 +226,12 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return board;
 	}
@@ -249,7 +259,7 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 		}
 	}
 
-	public String getUserName(String id, String pass) {
+	public String getUserName(String id, String pass) {     // 
 		conn = DAO.getConect();
 		String sql = "select * from user_login where id =? and passwd = ?";
 		String name = null;
@@ -268,9 +278,42 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 		return name;
 	}
 
-	public List<BoardDB> getBoardList() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BoardDB> getBoardList() {                   // 게시글 리스트 전체 조회하는 메소드 
+		BoardDB board = null;
+		conn = DAO.getConect();
+//		String sql = "select * from boards where orig_no is null";
+		String sql = "select board_no, title, content, writer, creation_date, orig_no,"
+					+" get_reply_cnt(b.board_no) as reply_count"
+					+" from boards b ";
+					
+		
+		// 리스트 생성
+		List<BoardDB> list = new ArrayList<>();
+
+		try {
+			pstmt = conn.prepareStatement(sql);  			// sql문을 연결해 pstmt에 담는다.
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				
+				board = new BoardDB();
+				board.setBoardNo(rs.getInt("board_no"));
+				board.setTitle(rs.getString("title") + "(" + rs.getString("reply_count")+")" );
+				board.setContent(rs.getString("Content"));
+				board.setWriter(rs.getString("writer"));
+				board.setCreationDate(rs.getString("creation_date"));
+				list.add(board);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
 	}
 
 }

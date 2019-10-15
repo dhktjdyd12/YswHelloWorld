@@ -26,7 +26,7 @@ public class BoardDBServiceImpl implements BoardDBService {  // BoardDBServiceIm
 
 	@Override
 	public BoardDB getBoard(int boardNo) {
-		return null;
+		return ;
 	}
 
 	@Override
