@@ -18,8 +18,8 @@ public class BoardProc {
 		while (true) {
 			System.out.println("메뉴선택하세요.");
 			System.out.println("1.작성 2.단건조회 3.전체조회 4.삭제  5.종료");
-			int menu = sc.nextInt();
-			sc.nextLine();
+			int menu = sc.nextInt();sc.nextLine();
+			
 			if (menu == 1) {
 				writeBoard();
 			} else if (menu == 2) {

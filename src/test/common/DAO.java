@@ -1,4 +1,4 @@
-package test;
+package test.common;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,8 +9,8 @@ public class DAO {
 		Connection conn = null;
 		
 		// DB 접속정보
-		String user = "ysw";
-		String passwd ="ysw";
+		String user = "ysw";       // 접속할 곳 아이디
+		String passwd ="ysw";      // 접속할 곳 비밀번호
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		
 		// 드라이버 로딩변수 driver 선언

@@ -1,4 +1,4 @@
-package test;
+package test.control;
 
 public class dingDBMain {
 	public static void main(String[] args) {

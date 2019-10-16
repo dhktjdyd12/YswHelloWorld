@@ -38,4 +38,20 @@ public class BoardServiceImpl implements BoardService {
 //		System.arraycopy(boards, 0, resultAry, 0, cnt);
 		return resultAry;
 	}
+
+	@Override
+	public void updateBoard(Board board, Board[] boards) {
+		for (int i = 0; i < boards.length; i++) {
+			if (boards[i] != null && boards[i].getBoardNo() == board.getBoardNo()) {
+				boards[i].setContents(board.getContents());
+			}
+		}
+
+	}
+
+	@Override
+	public void deleteBoard(int boardNo, Board[] boards) {
+		// TODO Auto-generated method stub
+
+	}
 }

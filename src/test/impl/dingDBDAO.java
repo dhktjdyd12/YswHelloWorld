@@ -1,4 +1,4 @@
-package test;
+package test.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,31 +9,26 @@ import java.util.List;
 import com.board.common.DAO;
 import com.board.model.BoardDB;
 
+import test.model.dingDB;
+import test.model.dingDBService;
+
 public class dingDBDAO { // sql문 작성하는 곳
 
 	Connection conn = null;
 	ResultSet rs = null; // DB에 받아온 결과값을 저장해놓는 타입 ResultSet
 	PreparedStatement pstmt = null; // 캐쉬값을 이용해서 sql쿼리문을 실행시켜주는 타입 PreparedStatement
 
-	public void createPerson(String id, String passwd) {   // 사원등록
+	public void createPerson(String id) {   // 사원등록
 		conn = DAO.getConect();
-		String sql = "insert into boards values((select max(board_no)+1 from boards), ?, ?, ?, ?, ?, sysdate, null)";
+		String sql = "insert into boards values((select max(board_no)+1 from boards), ?, ?, ?,?,?, sysdate, null)";
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.setString(2, passwd);
+			pstmt.setString(1, );
+			pstmt.setString(2, id.get);
+			pstmt.setString(3, id.get);
+			pstmt.setString(4, id.get);
+			pstmt.setString(5, id.get);
 			
-			rs = pstmt.executeQuery();
-			
-			pstmt.setInt(1, .getPersonNumber());   // 사원번호
-			pstmt.setString(2, rs.getn);        // 사원명
-			pstmt.setString(3, board.getDepartment());  // 부서
-			pstmt.setInt(4, board.getSalary());         // 급여
-			pstmt.setString(5, board.getHireDate());    // 입사일
-			
-			int r = pstmt.executeUpdate();
-			System.out.println(r + "사원이 등록되었습니다.");
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -52,7 +47,7 @@ public class dingDBDAO { // sql문 작성하는 곳
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, names);
+			pstmt.set(1, names);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				per = new dingDB();
@@ -72,11 +67,12 @@ public class dingDBDAO { // sql문 작성하는 곳
 		
 	}
 
-	public void checkDepartment
-	{ // 부서조회
+	public void checkDepartment{ 		// 부서입력하면 한개 조회 안적으면 전체 조회
 		dingDB dep = null;
 		conn = DAO.getConect();
-		String sql = "selcet from Name where PersonNumber is null";
+		String sql = "select board_no, title, content, writer, creation_date, orig_no,"
+					+" get_reply_cnt(b.board_no) as reply_count"
+					+" from ";
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -99,8 +95,7 @@ public class dingDBDAO { // sql문 작성하는 곳
 		return dep;
 	}
 
-	public void updateDepartment
-	{ // 부서변경
+	public void updateDepartment{ 		// 부서변경
 		System.out.println("content" + board.getContent());
 		conn = DAO.getConect();
 		String sql = "update boards set orig_no = orig_no";

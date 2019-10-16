@@ -1,11 +1,11 @@
-package test;
+package test.model;
 
 public class dingDB {
-	private int personNumber;    // 사원번호
-	private String name;         // 사원명
-	private String department;   // 부서
-	private int salary;          // 급여
-	private String hireDate;     // 입사일
+	private int personNumber;   // 사원번호
+	private String name;        // 사원명
+	private String department;  // 부서
+	private int salary;         // 급여
+	private String hireDate;    // 입사일
 
 	public int getPersonNumber() {
 		return personNumber;
@@ -47,6 +47,10 @@ public class dingDB {
 		this.hireDate = hireDate;
 	}
 
-
+	@Override
+	public String toString() {
+		return "dingDB [personNumber=" + personNumber + ", name=" + name + ", department=" + department + ", salary="
+				+ salary + ", hireDate=" + hireDate + "]";
+	}
 
 }
