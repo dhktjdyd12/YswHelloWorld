@@ -53,7 +53,7 @@ public class FunctionExample {
 		int sum=0, cnt=0;                 // sum과 cnt에 초기값을 넣어줌
 		for (Student studnet : list) {    // list에 있는 값을 하나씩 student에 루핑
 			cnt++;                           // cnt는 1씩 증감
-			sum += func.applyAsInt(studnet); // 자바API applyAsInt는 
+			sum += func.applyAsInt(studnet); // 람다식 실행
 		}
 		return (double) sum / cnt;    // sum값을 cnt로 나눈값을 리턴
 	}	

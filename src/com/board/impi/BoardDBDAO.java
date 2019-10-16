@@ -11,10 +11,10 @@ import com.board.common.DAO;
 import com.board.model.Board;
 import com.board.model.BoardDB;
 
-public class BoardDBDAO { // sql문 작성하는 클래스
+public class BoardDBDAO { // 실제적으로 sql문 작성하는 클래스
 	Connection conn = null;
-	ResultSet rs = null;
-	PreparedStatement pstmt = null;
+	ResultSet rs = null;                   // DB에 받아온 결과값을 저장해놓는 타입 ResultSet
+	PreparedStatement pstmt = null;        // 캐쉬값을 이용해서 sql쿼리문을 실행시켜주는 타입 PreparedStatement
 
 	public void deleteBoard(BoardDB board) { // 게시글 삭제하는 메소드
 		conn = DAO.getConect();
@@ -61,22 +61,22 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 		}
 	}
 
-	public boolean checkForReply(int boardNO) {       //
+	public boolean checkForReply(int boardNO) {       // 댓글 유무 체크하는 곳
 		conn = DAO.getConect();
 		String sql = "selecet count(*) as cnt from boards" + "where orig_no is null and board_no = ?";
 		int rnt = 0;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, boardNO);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			pstmt.setInt(1, boardNO);            // sql문에 첫번째 와일드카드에 매개변수를 넣는 구문
+			rs = pstmt.executeQuery();           // pstmt에 쿼리를 실행하는 executeQuery를 변수 rs에 담는다.
+			if(rs.next()) {                      // 다음 값을 받는 next() 
 				rnt = rs.getInt("cnt");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} if(rnt > 0) {
+		} if(rnt > 0) {                       // 댓글 객수가 0개 초과면 true 리턴
 			return true;
-		} else {
+		} else {                              // 댓글이 0개
 			return false;
 		}
 	}
@@ -146,7 +146,7 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 		}
 	}
 
-	public void replayBoard(BoardDB board) {
+	public void replayBoard(BoardDB board) {       // 댓글 작성
 		conn = DAO.getConect();
 		String sql = "insert into boards values" + "(board_seq.nextval, ?, ?, ?, sysdata, ?)";
 		try {
@@ -236,7 +236,7 @@ public class BoardDBDAO { // sql문 작성하는 클래스
 		return board;
 	}
 
-	public void insertBoard(BoardDB board) {
+	public void insertBoard(BoardDB board) {         // 글 작성하는 기능
 		conn = DAO.getConect();
 		String sql = "insert into boards values((select max(board_no)+1 from boards), ?, ?, ?, sysdate, null)";
 		try {

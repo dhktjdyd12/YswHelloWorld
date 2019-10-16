@@ -2,7 +2,7 @@ package com.board.model;
 
 import java.util.List;
 
-public interface BoardDBService {       //기능을 정의만 하는 클래스
+public interface BoardDBService {       // 어떤 기능이 있는지만 정의하고 실제 기능을 하는 곳은 BoardDBServiceImpl
 	
 	public String loginCheck(String id, String passwd); // 로그인 체크
 

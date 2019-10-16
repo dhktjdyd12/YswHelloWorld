@@ -5,7 +5,7 @@ import java.util.List;
 import com.board.model.BoardDB;
 import com.board.model.BoardDBService;
 
-public class BoardDBServiceImpl implements BoardDBService {  // BoardDBServiceImpl  BoardDBService 안에 있는 게 같아야한다.
+public class BoardDBServiceImpl implements BoardDBService {  // BoardDBDAO로 가는 중간역할을 하는 클래스 BoardDBServiceImpl
 	BoardDBDAO dao = new BoardDBDAO();
 	
 	@Override
@@ -15,8 +15,8 @@ public class BoardDBServiceImpl implements BoardDBService {  // BoardDBServiceIm
 	}
 
 	@Override
-	public void insertBoard(BoardDB board) {
-		dao.insertBoard(board);
+	public void insertBoard(BoardDB board) {      // BoardDBProc 에서 게시글 작성할 떄 실행한 메소드
+		dao.insertBoard(board);                   // boardDBDAO(sql있는 곳)에  insertBoard메소드에 매개변수를 넣음
 	}
 
 	@Override
@@ -25,8 +25,8 @@ public class BoardDBServiceImpl implements BoardDBService {  // BoardDBServiceIm
 	}
 
 	@Override
-	public BoardDB getBoard(int boardNo) {
-		return ;
+	public BoardDB getBoard(int boardNo) {          // 게시글 한개 조회하는 역할
+		return null;
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class BoardDBServiceImpl implements BoardDBService {  // BoardDBServiceIm
 	}
 
 	@Override
-	public void insertReply(BoardDB board) {
+	public void insertReply(BoardDB board) {        // 댓글 작성하는 역할
 		dao.replayBoard(board);
 	}
 

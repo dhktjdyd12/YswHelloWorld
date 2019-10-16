@@ -10,17 +10,17 @@ import com.board.model.BoardDBService;
 
 public class BoardDBProc {
 	Scanner sc = new Scanner(System.in);
-	BoardDBService service = new BoardDBServiceImpl();
-	Board[] boardAry = new Board[10];
+	BoardDBService service = new BoardDBServiceImpl(); // BoardDBService, BoardDBServiceImpl 두 기능을 쓸 수 있는
+													   // 객체 service를 새로 생성
 	String loginId = null;
 
 	
 	public void execute() { // 프로그램을 실행하는 execute 메소드
 		loginCheck();       // 회원인지 체크하는 메소드
 		while (true) {
-			System.out.println("1.게시글작성|2.게시글리스트|3.글조회|4.글내용수정|5.글번호변경|6.댓글 조회|7.종료");
-			int menu = sc.nextInt();
-			sc.nextLine();
+			System.out.println("1.게시글작성|2.전체게시글 조회|3.글 한개 조회|4.글내용수정|5.글번호변경|6.댓글 조회|7.종료");
+			int menu = sc.nextInt();sc.nextLine();
+			
 			if (menu == 1) {
 				createBoard();
 			} else if (menu == 2) {
@@ -33,7 +33,7 @@ public class BoardDBProc {
 				deleteBoard();
 			} else if (menu == 6) {
 				getReply();
-			}else if (menu == 7) {
+			} else if (menu == 7) {
 				System.out.println("프로그램을 종료합니다.");
 				break;
 			}
@@ -48,7 +48,9 @@ public class BoardDBProc {
 			String Id = sc.nextLine();
 			System.out.println("passwd를 입력해주세요.");
 			String passwd = sc.nextLine();
-			String name = service.loginCheck(Id, passwd); // loginCheck를 따라가보면 loginId만 적히고 passwd는 안니온다.
+			
+			String name = service.loginCheck(Id, passwd); // loginCheck를 따라가보면 loginId만 적히고 passwd는 안나온다.
+		
 			if (name != null) {
 				System.out.println(name + "환영합니다.");
 				loginId = Id; // 전역변수의 loginIdid를 쓴다.
@@ -65,14 +67,15 @@ public class BoardDBProc {
 		System.out.println("내용을 작성해주세요");
 		String content = sc.nextLine();
 
-		BoardDB das = new BoardDB();
+		BoardDB das = new BoardDB();       // 데이터타입이 (클래스)BoardDB인 객체를 새로 만들고 그 이름을 das로 해서 생성
 		das.setTitle(title);
 		das.setContent(content);
 		das.setWriter(loginId);
-		service.insertBoard(das);          // 실행한 값을 갖고 와서 여기서 적용시키는 구문
+		service.insertBoard(das);          // BoardDBService를 담는 객체 service에 게시글작성메소드인 insertBoard에
+		                                   // 매개변수로 담는다
 	}
 
-	private void checkBoardList() {                     // 게시글 리스트 조회하는 메소드
+	private void checkBoardList() {                     // 전체 게시글 조회하는 메소드
 		System.out.println("-------[전체글]-------");
         System.out.println("==============================");
         System.out.println("글번호 |  제목   |    내용     |  작성자   | 작성일자 ");
@@ -127,6 +130,8 @@ public class BoardDBProc {
 				board1.setWriter(loginId);
 				
 				service.insertReply(board1);
+			} else {
+				return;
 			}
 		}
 		}
@@ -147,7 +152,7 @@ public class BoardDBProc {
 		service.updateBoard(board);
 	}
 	
-	private void deleteBoard() {         // 글번호 변경하는 메소드
+	private void deleteBoard() {                             // 글삭제하는 메소드
 		System.out.println("삭제할 글번호 입력");
 		int boardNo = sc.nextInt();sc.nextLine();
 		
@@ -158,7 +163,7 @@ public class BoardDBProc {
 		service.deleteBoard(board);     // Ctrl 마우스클릭했을때 open implementation은 클래스로 이동
 	}
 	
-	private void getReply() {                         // 댓글조회하는 메소드
+	private void getReply() {                                // 댓글조회하는 메소드
 		
 	}
 }

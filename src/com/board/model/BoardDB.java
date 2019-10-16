@@ -1,6 +1,6 @@
 package com.board.model;
 
-public class BoardDB {
+public class BoardDB {              
 
 	private int boardNo;
 	private String title;

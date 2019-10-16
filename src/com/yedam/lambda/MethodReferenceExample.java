@@ -31,7 +31,7 @@ public class MethodReferenceExample {
 		oper = (x, y) -> {
 			return cal.instanceSum(x, y);
 		}; 
-		result = oper.applyAsInt(b, a)
+		result = oper.applyAsInt(b, a);
 		oper = cal::instanceSum;      // cal 안에 속한 instance메소드명
 		result = oper.applyAsInt(b, a);
 		System.out.println("인스턴스메소드참조: " + result);

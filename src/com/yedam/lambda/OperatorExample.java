@@ -15,18 +15,22 @@ public class OperatorExample {
 
 
 	public static void main(String[] args) {
-		IntBinaryOperator oper = (a,b) -> {       // 람다식에서는 바깥 클래스의 필드나 메소드는 사용가능, 
-			                                      // 메소드의 매개변수 또는 로컬변수를 사용하면 이 변수들은 final특성을 가져야한다.
-				int result = (a >= b ? a : b);
-				return result;
+		int results; // final
+		IntBinaryOperator oper = new IntBinaryOperator;
+			int results = 10;
+			@Override
+			public int applyAsInt(int a, int b ) {
+				System.out.println("in Method" + ++results);
+			}
+		};
+	results = 10;
+	System.out.println(results + " max: " + minOrMax(oper));
+			
+		oper = (a,b) -> {
+				System.out.println(results);              // results가 참조하고있는 값은 final이라 참조하는 값에 다른 값이 들어가면
+				                                          // results가 참조를 제대로 못해 에러가 발생한다.
+				return result = (a >= b ? a : b);
 		};
 
-		int result = minOrMax(oper);
-		System.out.println("max: " + result);
-
-		result = minOrMax((a, b) -> {
-			return (a >= b ? b : a);
-		} );
-		System.out.println("결과값: " + result );
 	}
 }
