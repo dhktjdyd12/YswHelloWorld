@@ -28,7 +28,7 @@ public class EmpDAO {
 //	}
 	
 	
-	public Employee getEmployee(int empId) {
+	public Employee getEmployee(int empId) {          // 사원이름 조회
 		conn = DAO.getConect();                                        // DB 연결해주는 것
 		String sql = "select * from employees where employee_id = ?";  // sql변수에 이 구문을 담음 
 		String sql1 = "{? = call get_dept_name(?)}";
@@ -88,7 +88,7 @@ public class EmpDAO {
 	}
 
 	
-	public void insertEmp(Employee emp) {
+	public void insertEmp(Employee emp) {                 // 직원 등록
 		conn = DAO.getConect();
 		String sql = "insert into employees(employee_id," + "first_name, last_name, email, job_id,"
 				+ "hire_date, salary) values (?,?,?,?,?,?,?)";
@@ -116,7 +116,7 @@ public class EmpDAO {
 		}
 	}
 
-	public List<Employee> getEmpList() {
+	public List<Employee> getEmpList() {           // 직원 전체 조회
 		List<Employee> list = new ArrayList<>();
 		Connection conn = DAO.getConect();
 		String sql = "select * from employees";
